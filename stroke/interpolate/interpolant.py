@@ -33,6 +33,8 @@ class Interp:
         The minimum and maximum values of the independent array.
     k : {1, 2, 3}
         Interpolation degree.
+    kind : {"linear", "quadratic", "cubic"}
+        The order of the interpolant.
     method : {"poly"}
         Selected interpolation method.
 
@@ -96,6 +98,7 @@ class Interp:
         self.x_min = self.x.min()
         self.x_max = self.x.max()
 
+        self.kind = kind
         self.method = method
 
     def __call__(self, x: np.ndarray, assume_ordered=False) -> np.ndarray:

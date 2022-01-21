@@ -2,14 +2,20 @@
 
 def _extend_inst(inst1, n1, inst2, n2):
 
-    inst1.extend(inst2)
-    for i in range(n1, n1 + n2):
+    for i in range(n2):
 
-        if inst1[i][1] is not None:
-            inst1[i][1] += n1
+        opp = inst2[i][0]
+        a = inst2[i][1]
+        b = inst2[i][2]
+        val = inst2[i][3]
 
-        if inst1[i][2] is not None:
-            inst1[i][2] += n1
+        if a is not None:
+            a += n1
+        
+        if b is not None:
+            b += n1
+        
+        inst1.append([opp, a, b, val])
 
     return inst1
 

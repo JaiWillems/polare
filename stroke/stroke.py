@@ -77,168 +77,190 @@ class Stroke:
 
     def __pos__(self):
 
-        return self
+        return self._copy()
 
     def __neg__(self):
 
-        self._inst.append([np.multiply, self._n - 1, None, -1])
-        self._n += 1
+        self_copy = self._copy()
+        self_copy._inst.append([np.multiply, self_copy._n - 1, None, -1])
+        self_copy._n += 1
 
-        return self
+        return self_copy
 
     def __add__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n - 1, self._n + other._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
         else:
-            a, b, val = self._n - 1, None, other
+            a, b, val = self_copy._n - 1, None, other
 
-        self._inst.append([np.add, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.add, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __radd__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n + other._n - 1, self._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
         else:
-            a, b, val = None, self._n - 1, other
+            a, b, val = None, self_copy._n - 1, other
 
-        self._inst.append([np.add, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.add, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __sub__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n - 1, self._n + other._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
         else:
-            a, b, val = self._n - 1, None, other
+            a, b, val = self_copy._n - 1, None, other
 
-        self._inst.append([np.subtract, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.subtract, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __rsub__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n + other._n - 1, self._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
         else:
-            a, b, val = None, self._n - 1, other
+            a, b, val = None, self_copy._n - 1, other
 
-        self._inst.append([np.subtract, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.subtract, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __mul__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n - 1, self._n + other._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
         else:
-            a, b, val = self._n - 1, None, other
+            a, b, val = self_copy._n - 1, None, other
 
-        self._inst.append([np.multiply, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.multiply, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __rmul__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n + other._n - 1, self._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
         else:
-            a, b, val = None, self._n - 1, other
+            a, b, val = None, self_copy._n - 1, other
 
-        self._inst.append([np.multiply, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.multiply, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __truediv__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n - 1, self._n + other._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
         else:
-            a, b, val = self._n - 1, None, other
+            a, b, val = self_copy._n - 1, None, other
 
-        self._inst.append([np.true_divide, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.true_divide, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __rtruediv__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n + other._n - 1, self._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
         else:
-            a, b, val = None, self._n - 1, other
+            a, b, val = None, self_copy._n - 1, other
 
-        self._inst.append([np.true_divide, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.true_divide, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __pow__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n - 1, self._n + other._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
         else:
-            a, b, val = self._n - 1, None, other
+            a, b, val = self_copy._n - 1, None, other
 
-        self._inst.append([np.power, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.power, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __rpow__(self, other):
 
+        self_copy= self._copy()
         if isinstance(other, type(self)):
-            self._inst = _extend_inst(self._inst, self._n, other._inst, other._n)
-            a, b, val = self._n + other._n - 1, self._n - 1, None
+            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
+            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
         else:
-            a, b, val = None, self._n - 1, other
+            a, b, val = None, self_copy._n - 1, other
 
-        self._inst.append([np.power, a, b, val])
-        self._n = len(self._inst)
+        self_copy._inst.append([np.power, a, b, val])
+        self_copy._n = len(self_copy._inst)
 
-        return self
+        return self_copy
 
     def __abs__(self):
 
-        self._inst.append([np.abs, self._n - 1, None, None])
-        self._n += 1
+        self_copy = self._copy()
+        self_copy._inst.append([np.abs, self_copy._n - 1, None, None])
+        self_copy._n += 1
 
-        return self
+        return self_copy
     
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
 
+        self_copy= self._copy()
         if method == '__call__':              
 
             if len(inputs) == 1:
                 a, b, val = inputs[0]._n - 1, None, None
             elif len(inputs) == 2:
-                self._inst = _extend_inst(inputs[0]._inst, inputs[0]._n, inputs[1]._inst, inputs[1]._n)
+                self_copy._inst = _extend_inst(inputs[0]._inst, inputs[0]._n, inputs[1]._inst, inputs[1]._n)
                 a, b, val = inputs[0]._n - 1, inputs[0]._n + inputs[1]._n - 1, None
 
-            self._inst.append([ufunc, a, b, val])
-            self._n = len(self._inst)
+            self_copy._inst.append([ufunc, a, b, val])
+            self_copy._n = len(self_copy._inst)
 
-            return self
+            return self_copy
 
         else:
             
             return NotImplemented
+    
+    def _copy(self):
+
+        x, y, kind, method = self._f.x.copy(), self._f.y.copy(), self._f.kind, self._f.method
+        stroke_copy = Stroke(x, y, kind, method)
+        stroke_copy._inst = self._inst.copy()
+        stroke_copy._n = self._n
+
+        return stroke_copy
 
