@@ -30,5 +30,6 @@ def _compute(inst, n, x):
     else:
         a = _compute(inst, inst[n][1], x)
         b = _compute(inst, inst[n][2], x)
-
-    return opp(a, b)
+    
+    temp= opp(a) if b is None else opp(a, b)
+    return temp

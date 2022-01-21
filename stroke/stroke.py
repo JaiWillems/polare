@@ -55,9 +55,9 @@ class Stroke:
 
     def __init__(self, x, y, kind="linear", method="poly"):
 
-        f = Interp(x, y, kind=kind, method=method)
+        self._f = Interp(x, y, kind=kind, method=method)
 
-        self._inst = [[None, None, None, f]]
+        self._inst = [[None, None, None, self._f]]
         self._n = len(self._inst)
 
     def __call__(self, x):
@@ -222,3 +222,23 @@ class Stroke:
         self._n += 1
 
         return self
+    
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+
+        if method == '__call__':              
+
+            if len(inputs) == 1:
+                a, b, val = inputs[0]._n - 1, None, None
+            elif len(inputs) == 2:
+                self._inst = _extend_inst(inputs[0]._inst, inputs[0]._n, inputs[1]._inst, inputs[1]._n)
+                a, b, val = inputs[0]._n - 1, inputs[0]._n + inputs[1]._n - 1, None
+
+            self._inst.append([ufunc, a, b, val])
+            self._n = len(self._inst)
+
+            return self
+
+        else:
+            
+            return NotImplemented
+
