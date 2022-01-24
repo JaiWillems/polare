@@ -2,6 +2,7 @@
 
 from stroke.interpolate import Interp
 from stroke._stroke_utils import _extend_inst, _compute
+from stroke._numpy_ufunc_overrides import HANDLED_FUNCTIONS
 import numpy as np
 
 
@@ -180,7 +181,50 @@ class Stroke:
 
         return copy
 
+    def _handle_functions(self, func, *inputs):
+        """Pre-process inputs to ufunc overrides.
+        
+        Parameters
+        ----------
+        func : function
+            Overriding function.
+        inputs : Stroke, int, float
+            `func` inputs.
+        
+        Returns
+        -------
+        Stroke
+            Post-processd Stroke.
+        """
+
+        copy = self._copy()
+        i0, i1 = inputs[0], inputs[1]
+
+        es, ev, xs, xv = None, None, None, None
+
+        if isinstance(i0, (int, float)):
+            ev, xs, n = i0, copy._n - 1, copy._n
+        elif isinstance(i1, (int, float)):
+            es, xv, n = copy._n - 1, i1, copy._n
+        else:
+            copy._inst = _extend_inst(i0._inst, i0._n, i1._inst, i1._n)
+            copy._n = len(copy._inst)
+            es, xs, n = i0._n - 1, i0._n + i1._n - 1, i0._n + i1._n
+
+        new_inst = func(es, ev, xs, xv, n)
+        copy._inst = _extend_inst(copy._inst, copy._n, new_inst, len(new_inst))
+        copy._n = len(copy._inst)
+
+        return copy    
+
     def _copy(self):
+        """Copy Stroke object.
+
+        Returns
+        -------
+        Stroke
+            Stroke with different place in memory as original.
+        """
 
         x, y = self._f.x.copy(), self._f.y.copy()
         kind, method = self._f.kind, self._f.method
@@ -191,33 +235,48 @@ class Stroke:
         return stroke_copy
     
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        """Handle NumPy universal functions.
 
-        self_copy= self._copy()
+        Parameters
+        ----------
+        ufunc : NumPy Universal Function
+        method
+
+        Returns
+        -------
+        Stroke
+            Post-processed Stroke.
+        """
+
+        copy= self._copy()
         if method == '__call__':
 
+            if ufunc in HANDLED_FUNCTIONS:
+                func = HANDLED_FUNCTIONS[ufunc]
+                return self._handle_functions(func, *inputs)
+
             try:
+
                 i0, i1 = inputs[0], inputs[1]
-            except:
-                i0 = inputs[0]   
-
-            if len(inputs) == 1:
-
-                a, b, val = i0._n - 1, None, None
-
-            elif len(inputs) == 2:
 
                 if isinstance(i0, (int, float)):
                     a, b, val = None, i1._n - 1, i0
                 elif isinstance(i1, (int, float)):
                     a, b, val = i0._n - 1, None, i1
                 else:
-                    self_copy._inst = _extend_inst(i0._inst, i0._n, i1._inst, i1._n)
+                    copy._inst = _extend_inst(i0._inst, i0._n, i1._inst, i1._n)
                     a, b, val = i0._n - 1, i0._n + i1._n - 1, None
 
-            self_copy._inst.append([ufunc, a, b, val])
-            self_copy._n = len(self_copy._inst)
+            except:
 
-            return self_copy
+                i0 = inputs[0]
+
+                a, b, val = i0._n - 1, None, None
+
+            copy._inst.append([ufunc, a, b, val])
+            copy._n = len(copy._inst)
+
+            return copy
 
         else:
             
