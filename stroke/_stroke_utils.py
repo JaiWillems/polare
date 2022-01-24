@@ -4,10 +4,7 @@ def _extend_inst(inst1, n1, inst2, n2):
 
     for i in range(n2):
 
-        opp = inst2[i][0]
-        a = inst2[i][1]
-        b = inst2[i][2]
-        val = inst2[i][3]
+        opp, a, b, val = inst2[i][0], inst2[i][1], inst2[i][2], inst2[i][3]
 
         if a is not None:
             a += n1
@@ -22,8 +19,7 @@ def _extend_inst(inst1, n1, inst2, n2):
 
 def _compute(inst, n, x):
 
-    opp = inst[n][0]
-    val = inst[n][3]
+    opp, val = inst[n][0], inst[n][3]
 
     if opp is None:
         return val(x)
@@ -36,6 +32,7 @@ def _compute(inst, n, x):
     else:
         a = _compute(inst, inst[n][1], x)
         b = _compute(inst, inst[n][2], x)
-    
-    temp= opp(a) if b is None else opp(a, b)
+
+    temp = opp(a) if b is None else opp(a, b)
+
     return temp

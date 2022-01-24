@@ -77,174 +77,142 @@ class Stroke:
 
     def __pos__(self):
 
-        return self._copy()
+        return self._uniary_operation(np.positive)
 
     def __neg__(self):
 
-        self_copy = self._copy()
-        self_copy._inst.append([np.multiply, self_copy._n - 1, None, -1])
-        self_copy._n += 1
-
-        return self_copy
+        return self._uniary_operation(np.negative)
 
     def __add__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
-        else:
-            a, b, val = self_copy._n - 1, None, other
-
-        self_copy._inst.append([np.add, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.add, other)
 
     def __radd__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
-        else:
-            a, b, val = None, self_copy._n - 1, other
-
-        self_copy._inst.append([np.add, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.add, other, r=True)
 
     def __sub__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
-        else:
-            a, b, val = self_copy._n - 1, None, other
-
-        self_copy._inst.append([np.subtract, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.subtract, other)
 
     def __rsub__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
-        else:
-            a, b, val = None, self_copy._n - 1, other
-
-        self_copy._inst.append([np.subtract, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.subtract, other, r=True)
 
     def __mul__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
-        else:
-            a, b, val = self_copy._n - 1, None, other
-
-        self_copy._inst.append([np.multiply, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.multiply, other)
 
     def __rmul__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
-        else:
-            a, b, val = None, self_copy._n - 1, other
-
-        self_copy._inst.append([np.multiply, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.multiply, other, r=True)
 
     def __truediv__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
-        else:
-            a, b, val = self_copy._n - 1, None, other
-
-        self_copy._inst.append([np.true_divide, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.true_divide, other)
 
     def __rtruediv__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
-        else:
-            a, b, val = None, self_copy._n - 1, other
-
-        self_copy._inst.append([np.true_divide, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.true_divide, other, r=True)
 
     def __pow__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n - 1, self_copy._n + other._n - 1, None
-        else:
-            a, b, val = self_copy._n - 1, None, other
-
-        self_copy._inst.append([np.power, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.power, other)
 
     def __rpow__(self, other):
 
-        self_copy= self._copy()
-        if isinstance(other, type(self)):
-            self_copy._inst = _extend_inst(self_copy._inst, self_copy._n, other._inst, other._n)
-            a, b, val = self_copy._n + other._n - 1, self_copy._n - 1, None
-        else:
-            a, b, val = None, self_copy._n - 1, other
-
-        self_copy._inst.append([np.power, a, b, val])
-        self_copy._n = len(self_copy._inst)
-
-        return self_copy
+        return self._binary_operation(np.power, other, r=True)
 
     def __abs__(self):
 
-        self_copy = self._copy()
-        self_copy._inst.append([np.abs, self_copy._n - 1, None, None])
-        self_copy._n += 1
+        return self._uniary_operation(np.abs)
+    
+    def _binary_operation(self, ufunc, other, r=False):
+        """Return Stroke post binary operation.
 
-        return self_copy
+        Parameters
+        ----------
+        ufunc : ufunc
+            Binary NumPy universal function call.
+        other : Stroke, int, float
+            Second element in operation.
+        r : bool, optional
+            Represents a right operation when True.
+
+        Returns
+        -------
+        Stroke
+            Stroke post binary operation.
+        """
+
+        copy = self._copy()
+
+        if isinstance(other, type(self)):
+            copy._inst = _extend_inst(copy._inst, copy._n, other._inst, other._n)
+            a, b, val = copy._n - 1, copy._n + other._n - 1, None
+        else:
+            a, b, val = copy._n - 1, None, other
+        
+        a, b, val = (b, a, val) if r else (a, b, val)
+
+        copy._inst.append([ufunc, a, b, val])
+        copy._n = len(copy._inst)
+
+        return copy
+    
+    def _uniary_operation(self, ufunc):
+        """Return Stroke post uniary operation.
+
+        Parameters
+        ----------
+        ufunc : ufunc
+            Uniary NumPy universal function call.
+
+        Returns
+        -------
+        Stroke
+            Stroke post uniary operation.
+        """
+        
+        copy = self._copy()
+        copy._inst.append([ufunc, copy._n - 1, None, None])
+        copy._n += 1
+
+        return copy
+
+    def _copy(self):
+
+        x, y = self._f.x.copy(), self._f.y.copy()
+        kind, method = self._f.kind, self._f.method
+        stroke_copy = Stroke(x, y, kind, method)
+        stroke_copy._inst = self._inst.copy()
+        stroke_copy._n = self._n
+
+        return stroke_copy
     
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
 
         self_copy= self._copy()
-        if method == '__call__':              
+        if method == '__call__':
+
+            try:
+                i0, i1 = inputs[0], inputs[1]
+            except:
+                i0 = inputs[0]   
 
             if len(inputs) == 1:
-                a, b, val = inputs[0]._n - 1, None, None
+
+                a, b, val = i0._n - 1, None, None
+
             elif len(inputs) == 2:
-                self_copy._inst = _extend_inst(inputs[0]._inst, inputs[0]._n, inputs[1]._inst, inputs[1]._n)
-                a, b, val = inputs[0]._n - 1, inputs[0]._n + inputs[1]._n - 1, None
+
+                if isinstance(i0, (int, float)):
+                    a, b, val = None, i1._n - 1, i0
+                elif isinstance(i1, (int, float)):
+                    a, b, val = i0._n - 1, None, i1
+                else:
+                    self_copy._inst = _extend_inst(i0._inst, i0._n, i1._inst, i1._n)
+                    a, b, val = i0._n - 1, i0._n + i1._n - 1, None
 
             self_copy._inst.append([ufunc, a, b, val])
             self_copy._n = len(self_copy._inst)
@@ -254,13 +222,3 @@ class Stroke:
         else:
             
             return NotImplemented
-    
-    def _copy(self):
-
-        x, y, kind, method = self._f.x.copy(), self._f.y.copy(), self._f.kind, self._f.method
-        stroke_copy = Stroke(x, y, kind, method)
-        stroke_copy._inst = self._inst.copy()
-        stroke_copy._n = self._n
-
-        return stroke_copy
-
