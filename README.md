@@ -60,9 +60,11 @@ xnew = np.linspace(-1, 1, 100)
 ynew = f(xnew)
 ```
 
-The stroke is also compatible with NumPy's universal functions.
-
-For example, given the time series of cartesian coordinates of a body and a time series of angles, the position components can be rotated about the z-axis by the given angles as follows:
+The stroke is also compatible with NumPy's universal functions allowing for
+simple integration into NumPy intensive data handling workflows. An example
+application is converting time-series cartesian coordinates of a body and
+time-series angles, the position components can be rotated about the z-axis by
+the given angles as follows:
 
 ```python
 # Generate data.
@@ -82,12 +84,9 @@ fz = Stroke(t, z, kind="cubic")
 pos = np.array([fx, fy, fz], dtype=object)
 
 # Construct rotation matrix and rotate position vector.
-A11 = np.cos(ftheta)
-A12 = -np.sin(ftheta)
-A21 = np.sin(ftheta)
-A22 = np.cos(ftheta)
-
-M = np.array([[A11, A12, 0], [A21, A22, 0], [0, 0, 1]], dtype=object)
+M = np.array([[np.cos(ftheta), -np.sin(ftheta), 0],
+              [np.sin(ftheta), np.cos(ftheta),  0],
+              [0,              0,               1]], dtype=object)
 new_pos = np.matmul(M, pos)
 
 # Interpolate new (rotated) positions.
