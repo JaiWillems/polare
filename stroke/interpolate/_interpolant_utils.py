@@ -41,11 +41,8 @@ def _get_segments(x: np.ndarray, k: int) -> np.ndarray:
     return s
 
 
-def _linear_power(M, axis=0):
-    """Take increasing power along input axis.
-
-    Takes the ith power of the ith column elements if `axis=0`; takes the ith
-    power of the ith row elements if `axis=1`.
+def _linear_power(M):
+    """Take increasing power along the zero axis.
     
     Parameters
     ----------
@@ -57,14 +54,7 @@ def _linear_power(M, axis=0):
     Mi : np.ndarray
     """
 
-    a1, a2 = M.shape
+    [_, b] = M.shape
+    e = np.arange(0, b, 1)
 
-    if axis == 0:
-        shape, a, b = (1, -1), a1, a2
-    else:
-        shape, a, b = (-1, 1), a2, a1
-
-    p1 = np.arange(0, b, 1).reshape(shape)
-    p2 = np.repeat(p1, a, axis=axis)
-
-    return np.power(M, p2)
+    return np.power(M, e)

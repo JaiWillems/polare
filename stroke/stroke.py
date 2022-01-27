@@ -228,6 +228,7 @@ class Stroke:
 
         x, y = self._f.x.copy(), self._f.y.copy()
         kind, method = self._f.kind, self._f.method
+        
         stroke_copy = Stroke(x, y, kind, method)
         stroke_copy._inst = self._inst.copy()
         stroke_copy._n = self._n
@@ -248,7 +249,6 @@ class Stroke:
             Post-processed Stroke.
         """
 
-        copy= self._copy()
         if method == '__call__':
 
             if ufunc in HANDLED_FUNCTIONS:
@@ -258,6 +258,7 @@ class Stroke:
             try:
 
                 i0, i1 = inputs[0], inputs[1]
+                copy = self._copy()
 
                 if isinstance(i0, (int, float)):
                     a, b, val = None, i1._n - 1, i0
@@ -270,6 +271,7 @@ class Stroke:
             except:
 
                 i0 = inputs[0]
+                copy = self._copy()
 
                 a, b, val = i0._n - 1, None, None
 

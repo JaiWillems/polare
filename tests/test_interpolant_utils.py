@@ -201,8 +201,5 @@ class TestLinearPower(TestCase):
                          [4, 5, 6],
                          [49, 64, 81]])
         
-        mat2test = _linear_power(mat1, axis=0)
+        mat2test = _linear_power(mat1)
         self.assertTrue(np.array_equal(mat2, mat2test))
-
-        mat3test = _linear_power(mat1, axis=1)
-        self.assertTrue(np.array_equal(mat3, mat3test))

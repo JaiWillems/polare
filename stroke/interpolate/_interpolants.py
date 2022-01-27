@@ -51,15 +51,15 @@ def Vandermonde(x: np.ndarray, y: np.ndarray, k: int, xi: np.ndarray) -> np.ndar
     for si in range(len(s)):
 
         i1 = np.where((s[si][0] <= x) & (x <= s[si][1]))[0]
-        var = np.repeat(x[i1].reshape((-1, 1)), k + 1, axis=1)
-        var = _linear_power(var, axis=0)
+        var = np.full((k + 1, x[i1].size), x[i1]).T
+        var = _linear_power(var)
 
         c = np.linalg.solve(var, y[i1])
 
         i2 = np.where((s[si][0] <= xi) & (xi <= s[si][1]))[0]
-        cc = np.repeat(np.reshape(c, (1, -1)), len(i2), axis=0)
-        xixi = np.repeat(np.reshape(xi[i2], (-1, 1)), k + 1, axis=1)
-        xixi = _linear_power(xixi, axis=0)
+        cc = np.full((len(i2), c.size), c)
+        xixi = np.full((k + 1, xi[i2].size), xi[i2]).T
+        xixi = _linear_power(xixi)
 
         yi[i2] = np.sum(cc * xixi, axis=1)
 
