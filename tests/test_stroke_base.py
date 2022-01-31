@@ -12,9 +12,9 @@ class TestStrokeBase(TestCase):
         self.x = np.linspace(-1, 1, 10)
         self.y = np.exp(self.x) + np.cos(np.pi * self.x) - 1
 
-        self.f1 = Stroke(self.x, self.y, "linear", "poly")
-        self.f2 = Stroke(self.x, self.y, "quadratic", "poly")
-        self.f3 = Stroke(self.x, self.y, "cubic", "poly")
+        self.f1 = Stroke(self.x, self.y, "linear")
+        self.f2 = Stroke(self.x, self.y, "quadratic")
+        self.f3 = Stroke(self.x, self.y, "cubic")
 
         self.xnew = np.linspace(-1, 1, 100)
         self.ynew = np.exp(self.xnew) + np.cos(np.pi * self.xnew) - 1

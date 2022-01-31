@@ -1,13 +1,13 @@
 
 
-from stroke.interpolate import Interp
+from stroke.interpolant import Interp
 from stroke._stroke_utils import _extend_inst, _compute
 from stroke._numpy_ufunc_overrides import HANDLED_FUNCTIONS
 import numpy as np
 
 
 class Stroke:
-    """Stroke(x, y, kind="linear", method="poly")
+    """Stroke(x, y, kind="linear")
 
     Kernel for continuous data operations.
 
@@ -24,9 +24,7 @@ class Stroke:
         The data in `x` defines the independent variable; the data in `y`
         define the dependent variable.
     kind : {"linear", "quadratic", "cubic"}, optional
-        The order of interpolation to use. Default is 'linear'.
-    method : {"poly"}, optional
-        The type of interpolation. Default is 'poly'.
+        The order of spline interpolation to use. Default is 'linear'.
 
     Methods
     -------
@@ -39,7 +37,7 @@ class Stroke:
     >>> from stroke import Stroke
     >>> x = np.linspace(-1, 1, 100)
     >>> y = np.exp(x) + np.cos(np.pi * x) + 1
-    >>> s = Stroke(x=x, y=y, kind="quadratic", method="poly")
+    >>> s = Stroke(x=x, y=y, kind="quadratic")
 
     Apply some operations:
 
@@ -54,9 +52,9 @@ class Stroke:
     >>> plt.show()
     """
 
-    def __init__(self, x, y, kind="linear", method="poly"):
+    def __init__(self, x, y, kind="linear"):
 
-        self._f = Interp(x, y, kind=kind, method=method)
+        self._f = Interp(x, y, kind=kind)
 
         self._inst = [[None, None, None, self._f]]
         self._n = len(self._inst)
@@ -226,10 +224,10 @@ class Stroke:
             Stroke with different place in memory as original.
         """
 
-        x, y = self._f.x.copy(), self._f.y.copy()
-        kind, method = self._f.kind, self._f.method
+        x, y = self._f._f.x.copy(), self._f._f.y.copy()
+        kind = self._f._kind
         
-        stroke_copy = Stroke(x, y, kind, method)
+        stroke_copy = Stroke(x, y, kind)
         stroke_copy._inst = self._inst.copy()
         stroke_copy._n = self._n
 

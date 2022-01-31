@@ -90,7 +90,7 @@ M = np.array([[np.cos(ftheta), -np.sin(ftheta), 0],
 new_pos = np.matmul(M, pos)
 
 # Interpolate new (rotated) positions.
-tnew = np.linspace(-1, 1, 100)
+tnew = np.linspace(0, 9, 100)
 xnew = new_pos[0](tnew)
 ynew = new_pos[1](tnew)
 znew = new_pos[2](tnew)

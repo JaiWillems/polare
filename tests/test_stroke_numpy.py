@@ -12,14 +12,14 @@ class TestStrokeNumpyMath(TestCase):
         self.x = np.linspace(-1, 1, 10)
         self.y = np.exp(self.x) + np.cos(np.pi * self.x) - 1
 
-        self.f1 = Stroke(self.x, self.y, "linear", "poly")
-        self.f2 = Stroke(self.x, self.y, "quadratic", "poly")
-        self.f3 = Stroke(self.x, self.y, "cubic", "poly")
+        self.f1 = Stroke(self.x, self.y, "linear")
+        self.f2 = Stroke(self.x, self.y, "quadratic")
+        self.f3 = Stroke(self.x, self.y, "cubic")
 
         self.xother = np.linspace(-1, 1, 10)
         self.yother = np.sin(2 * self.xother)
 
-        self.fother = Stroke(self.xother, self.yother, "linear", "poly")
+        self.fother = Stroke(self.xother, self.yother, "linear")
     
     def test_add(self):
         
@@ -574,14 +574,14 @@ class TestStrokeNumpyTrig(TestCase):
         self.x = np.linspace(-1, 1, 10)
         self.y = np.exp(self.x) + np.cos(np.pi * self.x) - 1
 
-        self.f1 = Stroke(self.x, self.y, "linear", "poly")
-        self.f2 = Stroke(self.x, self.y, "quadratic", "poly")
-        self.f3 = Stroke(self.x, self.y, "cubic", "poly")
+        self.f1 = Stroke(self.x, self.y, "linear")
+        self.f2 = Stroke(self.x, self.y, "quadratic")
+        self.f3 = Stroke(self.x, self.y, "cubic")
 
         self.xother = np.linspace(-1, 1, 10)
         self.yother = np.sin(2 * self.xother)
 
-        self.fother = Stroke(self.xother, self.yother, "linear", "poly")
+        self.fother = Stroke(self.xother, self.yother, "linear")
     
     def test_sin(self):
         
@@ -811,14 +811,14 @@ class TestStrokeNumpyComparison(TestCase):
         self.x = np.linspace(-1, 1, 10)
         self.y = np.exp(self.x) + np.cos(np.pi * self.x) - 1
 
-        self.f1 = Stroke(self.x, self.y, "linear", "poly")
-        self.f2 = Stroke(self.x, self.y, "quadratic", "poly")
-        self.f3 = Stroke(self.x, self.y, "cubic", "poly")
+        self.f1 = Stroke(self.x, self.y, "linear")
+        self.f2 = Stroke(self.x, self.y, "quadratic")
+        self.f3 = Stroke(self.x, self.y, "cubic")
 
         self.xother = np.linspace(-1, 1, 10)
         self.yother = np.sin(2 * self.xother)
 
-        self.fother = Stroke(self.xother, self.yother, "linear", "poly")
+        self.fother = Stroke(self.xother, self.yother, "linear")
     
     def test_greater(self):
         
@@ -1216,14 +1216,14 @@ class TestStrokeNumpyFloating(TestCase):
         self.x = np.linspace(-1, 1, 10)
         self.y = np.exp(self.x) + np.cos(np.pi * self.x) - 1
 
-        self.f1 = Stroke(self.x, self.y, "linear", "poly")
-        self.f2 = Stroke(self.x, self.y, "quadratic", "poly")
-        self.f3 = Stroke(self.x, self.y, "cubic", "poly")
+        self.f1 = Stroke(self.x, self.y, "linear")
+        self.f2 = Stroke(self.x, self.y, "quadratic")
+        self.f3 = Stroke(self.x, self.y, "cubic")
 
         self.xother = np.linspace(-1, 1, 10)
         self.yother = np.sin(2 * self.xother)
 
-        self.fother = Stroke(self.xother, self.yother, "linear", "poly")
+        self.fother = Stroke(self.xother, self.yother, "linear")
     
     def test_isfinite(self):
         
