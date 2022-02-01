@@ -1,7 +1,8 @@
 
 
-import numpy as np
 from scipy.interpolate import interp1d
+import numpy as np
+import numpy.typing as npt
 
 
 class Interp:
@@ -11,7 +12,7 @@ class Interp:
 
     `x` and `y` are arrays of values to describe a function ``y=f(x)`` for
     scalar ``x`` and ``y``. This class returns a function whose call method
-    uses the specified interpolant to find the value of new points.
+    uses the specified interpolant order to find the value of new points.
 
     Parameters
     ----------
@@ -20,18 +21,14 @@ class Interp:
 
         The data in `x` define the independent variable; the data in `y`
         define the dependent variable.
-    kind : {"linear", "quadratic", "cubic", optional
+    kind : {"linear", "quadratic", "cubic"}, optional
         The order of interpolation to use. Default is 'linear'.
 
     Attributes
     ----------
-    x, y : np.ndarray
-        The input interpolation point data.
-    x_min, x_max : float
-        The minimum and maximum values of the independent array.
-    k : {1, 2, 3}
-        Interpolation degree.
-    kind : {"linear", "quadratic", "cubic"}
+    _f : interp1d
+        The interpolation callable.
+    _kind : {"linear", "quadratic", "cubic"}
         The order of the interpolant.
 
     Methods
@@ -62,29 +59,34 @@ class Interp:
     >>> plt.show()
     """
 
-    def __init__(self, x: np.ndarray, y: np.ndarray, kind) -> None:
-        
+    def __init__(self, x: npt.ArrayLike, y: npt.ArrayLike, kind: str) -> None:
+
         self._f = interp1d(x, y, kind)
         self._kind = kind
 
-    def __call__(self, x: np.ndarray, assume_ordered=False) -> np.ndarray:
+    def __call__(self, x: npt.ArrayLike, assume_ordered: bool=False) -> np.ndarray:
         """Interpolate the function.
 
         Parameters
         ----------
-        x : 1-D array
-            The x-coordinates on which to interpolate.
+        x : array_like
+            1D array representing the x-coordinates on which to interpolate.
+        assume_ordered : bool, optional
+            Assumes interpolation points are ordered in increasing order if
+            `True`.
 
         Returns
         -------
-        y : 1-D array
-            The interpolated values.
+        y : array_like
+            1D array representing the interpolated values.
         """
 
         xi = np.array(x, copy=True)
 
-        if xi.ndim != 1:
-            raise ValueError("x should be a 1-D array.")
+        if xi.ndim == 0:
+            xi = np.array([x], copy=True)
+        elif xi.ndim != 1:
+            raise ValueError("x should be a scalar or 1D array.")
 
         if not assume_ordered:
             xi = np.sort(xi, kind="quicksort")

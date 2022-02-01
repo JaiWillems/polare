@@ -1,9 +1,10 @@
 
 
 from polare.interpolant import Interp
-from polare._stroke_utils import _extend_inst, _compute
 from polare._numpy_ufunc_overrides import HANDLED_FUNCTIONS
+from polare._stroke_utils import _extend_inst, _compute
 import numpy as np
+import numpy.typing as npt
 
 
 class Stroke:
@@ -52,27 +53,31 @@ class Stroke:
     >>> plt.show()
     """
 
-    def __init__(self, x, y, kind="linear"):
+    def __init__(self, x: npt.ArrayLike, y: npt.ArrayLike, kind: str="linear") -> None:
 
         self._f = Interp(x, y, kind=kind)
 
         self._inst = [[None, None, None, self._f]]
         self._n = len(self._inst)
 
-    def __call__(self, x):
+    def __call__(self, x: npt.ArrayLike, assume_ordered: bool=False) -> np.ndarray:
         """Interpolate the function.
 
         Parameters
         ----------
-        x : 1-D array
-            The x-coordinates on which to interpolate.
+        x : array_like
+            1D array of x-coordinates on which to interpolate.
+        assume_ordered : bool, optional
+            Assumes interpolation points are ordered in increasing order if
+            `True`.
+
         Returns
         -------
-        y : 1-D array
-            The interpolated values.
+        y : np.ndarray
+            1D array of the interpolated values.
         """
 
-        return _compute(self._inst, self._n - 1, x)
+        return _compute(self._inst, self._n - 1, x, assume_ordered)
 
     def __pos__(self):
 
@@ -125,7 +130,7 @@ class Stroke:
     def __abs__(self):
 
         return self._uniary_operation(np.abs)
-    
+
     def _binary_operation(self, ufunc, other, r=False):
         """Return Stroke post binary operation.
 
@@ -147,18 +152,21 @@ class Stroke:
         copy = self._copy()
 
         if isinstance(other, type(self)):
+
             copy._inst = _extend_inst(copy._inst, copy._n, other._inst, other._n)
             a, b, val = copy._n - 1, copy._n + other._n - 1, None
+
         else:
+
             a, b, val = copy._n - 1, None, other
-        
+
         a, b, val = (b, a, val) if r else (a, b, val)
 
         copy._inst.append([ufunc, a, b, val])
         copy._n = len(copy._inst)
 
         return copy
-    
+
     def _uniary_operation(self, ufunc):
         """Return Stroke post uniary operation.
 
@@ -172,7 +180,7 @@ class Stroke:
         Stroke
             Stroke post uniary operation.
         """
-        
+
         copy = self._copy()
         copy._inst.append([ufunc, copy._n - 1, None, None])
         copy._n += 1
@@ -181,14 +189,14 @@ class Stroke:
 
     def _handle_functions(self, func, *inputs):
         """Pre-process inputs to ufunc overrides.
-        
+
         Parameters
         ----------
         func : function
             Overriding function.
         inputs : Stroke, int, float
             `func` inputs.
-        
+
         Returns
         -------
         Stroke
@@ -213,7 +221,7 @@ class Stroke:
         copy._inst = _extend_inst(copy._inst, copy._n, new_inst, len(new_inst))
         copy._n = len(copy._inst)
 
-        return copy    
+        return copy
 
     def _copy(self):
         """Copy Stroke object.
@@ -226,13 +234,13 @@ class Stroke:
 
         x, y = self._f._f.x.copy(), self._f._f.y.copy()
         kind = self._f._kind
-        
+
         stroke_copy = Stroke(x, y, kind)
         stroke_copy._inst = self._inst.copy()
         stroke_copy._n = self._n
 
         return stroke_copy
-    
+
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
         """Handle NumPy universal functions.
 
@@ -279,5 +287,5 @@ class Stroke:
             return copy
 
         else:
-            
+
             return NotImplemented

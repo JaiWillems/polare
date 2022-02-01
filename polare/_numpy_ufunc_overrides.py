@@ -14,22 +14,31 @@ def implements(np_function):
 
 
 @implements(np.power)
-def power(es, ev, xs, xv, n):
-    """NumPy's `power` function override.
+def power(es: int, ev: float, xs: int, xv: float, n: int) -> list:
+    """NumPy's `power` universal function override.
 
     Parameters
     ----------
-    e : int
-        Base instruction index.
-    x : int
-        Exponent instruction index.
+    es : int
+        Base instruction index for Stroke bases.
+    ev : int, float
+        Base value for scalar bases.
+    xs : int
+        Exponent instruction index for Stroke exponents.
+    xv : int, float
+        Exponent value for scalar exponents.
     n : int
-        Prior instruction length.
+        Prior instruction index.
 
     Returns
     -------
     List
-        Additional instructions to append.
+        Instructions to append to Stroke._inst.
+
+    Notes
+    -----
+    This ufunc override enables `np.power` to bring integers to negative
+    integer powers.
     """
 
     if es is not None and xs is not None:
@@ -44,7 +53,7 @@ def power(es, ev, xs, xv, n):
                 [np.absolute, es - n, None, None],
                 [np.power, 7, xs - n, None],
                 [np.multiply, 6, 8, None]]
-    
+
     elif es is not None:
 
         val = (xv % 2) != 0
@@ -56,7 +65,7 @@ def power(es, ev, xs, xv, n):
                 [np.absolute, es - n, None, None],
                 [np.power, 5, None, xv],
                 [np.multiply, 4, 6, None]]
-    
+
     else:
 
         val = ev < 0
@@ -73,22 +82,31 @@ def power(es, ev, xs, xv, n):
 
 
 @implements(np.float_power)
-def float_power(es, ev, xs, xv, n):
-    """NumPy's `float_power` function override.
+def float_power(es: int, ev: float, xs: int, xv: float, n: int) -> list:
+    """NumPy's `float_power` universal function override.
 
     Parameters
     ----------
-    e : int
-        Base instruction index.
-    x : int
-        Exponent instruction index.
+    es : int
+        Base instruction index for Stroke bases.
+    ev : int, float
+        Base value for scalar bases.
+    xs : int
+        Exponent instruction index for Stroke exponents.
+    xv : int, float
+        Exponent value for scalar exponents.
     n : int
-        Prior instruction length.
+        Prior instruction index.
 
     Returns
     -------
     List
-        Additional instructions to append.
+        Instructions to append to Stroke._inst.
+
+    Notes
+    -----
+    This ufunc override enables `np.float_power` to bring integers to negative
+    integer powers.
     """
 
     if es is not None and xs is not None:
@@ -103,7 +121,7 @@ def float_power(es, ev, xs, xv, n):
                 [np.absolute, es - n, None, None],
                 [np.float_power, 7, xs - n, None],
                 [np.multiply, 6, 8, None]]
-    
+
     elif es is not None:
 
         val = (xv % 2) != 0
@@ -115,7 +133,7 @@ def float_power(es, ev, xs, xv, n):
                 [np.absolute, es - n, None, None],
                 [np.float_power, 5, None, xv],
                 [np.multiply, 4, 6, None]]
-    
+
     else:
 
         val = ev < 0
