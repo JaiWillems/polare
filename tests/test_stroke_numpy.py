@@ -1,6 +1,6 @@
 
 
-from stroke import Stroke
+from polare import Stroke
 from unittest import TestCase
 import numpy as np
 

@@ -1,8 +1,8 @@
 
 
-from stroke.interpolant import Interp
-from stroke._stroke_utils import _extend_inst, _compute
-from stroke._numpy_ufunc_overrides import HANDLED_FUNCTIONS
+from polare.interpolant import Interp
+from polare._stroke_utils import _extend_inst, _compute
+from polare._numpy_ufunc_overrides import HANDLED_FUNCTIONS
 import numpy as np
 
 

@@ -1,6 +1,6 @@
 
 
-from stroke.interpolant import Interp
+from polare.interpolant import Interp
 from unittest import TestCase
 import numpy as np
 
