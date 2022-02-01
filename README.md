@@ -1,7 +1,6 @@
-# Stroke
+# Polare
 
-A stroke is a kernel for continuous data operations that stores a continuous representation of input data. It takes in an `x` and `y` array representing the function `y=f(x)` for scalar `x` and `y`; the object can then be operated on as if it was a point value instead of an array. Practically, a stroke represents
-the continuous form of the underlying data allowing it to be evaluated at any time within its input domain.
+Polare defines a stroke object as a kernel for continuous data transformations that stores a "continuous" representation of input data. It takes in an `x` and `y` array representing the function `y=f(x)` for scalar `x` and `y`; the object can then be operated on as if it was a point value instead of an array. Practically, a stroke represents the continuous form of the underlying data allowing it to be evaluated within its input domain. It is best motivated through the examples below.
 
 Currently, the program supports the following scalar-to-stroke and stroke-to-stroke operations in addition to compatibility with NumPy's universal functions:
 
@@ -14,16 +13,16 @@ Currently, the program supports the following scalar-to-stroke and stroke-to-str
 - Power, and
 - Absolute value.
 
-## When to use a Stroke
+## When to use Polare
 
-The stroke was designed to allow for continuous representation of discrete data operations. In some cases (such as coordinate conversions), input data may be smooth, whereas output data can be very irregular. If interpolation on the output is desired, capturing the actual data behaviour can be challenging. A more robust and accurate fit of irregular data can be achieved by performing the conversion using a stroke with its "continuous" representation.
+The stroke is designed to allow for a continuous representation of discrete data transformations and is necessary for transformations with smooth input data but irregular output data. If interpolation on the output is desired, capturing the actual data behaviour can be challenging. A more robust and accurate fit of irregular data can be achieved by performing the conversion using a stroke with its "continuous" representation.
 
 ## Quick Start Guide
 
 Firstly, the stroke can be used for interpolation!
 
 ```python
-from stroke import Stroke
+from polare import Stroke
 import numpy as np
 
 # Generate data.
@@ -31,28 +30,21 @@ x = np.linspace(-1, 1, 10)
 y = np.exp(x) + np.cos(np.pi * x) + 1
 
 # Instantiate Stroke object.
-f = Stroke(x=x, y=y, kind="cubic", method="poly")
+f = Stroke(x=x, y=y, kind="cubic")
 
 # Interpolate.
 xnew = np.linspace(-1, 1, 100)
 ynew = f(xnew)
 ```
 
-...but with a unique twist. Stroke objects can be operated on using standard
+...but with the twist that Stroke objects can be operated on using standard
 Python operators.
 
 ```python
-# Generate data.
-x = np.linspace(-1, 1, 10)
-y = np.full((10,), 1)
-
-# Instantiate Stroke object.
-f = Stroke(x=x, y=y, kind="cubic", method="poly")
-
-# We can shift the graph through addition/subtraction.
+# We can shift the stroke through addition/subtraction.
 f = f + 10
 
-# We can scale the graph through multiplication/division.
+# We can scale the stroke through multiplication/division.
 f = 5 * f
 
 # And then interpolate the final result...
@@ -61,37 +53,76 @@ ynew = f(xnew)
 ```
 
 The stroke is also compatible with NumPy's universal functions allowing for
-simple integration into NumPy intensive data handling workflows. An example
-application is converting time-series cartesian coordinates of a body and
-time-series angles, the position components can be rotated about the z-axis by
-the given angles as follows:
+simple integration into NumPy intensive data handling workflows.
+
+For the following NumPy-focused examples, we will use the proceeding variable definitions:
 
 ```python
-# Generate data.
-theta = np.linspace(0, np.pi, 10)
-t = np.linspace(0, 9, 10)
-x = np.cos(t)
-y = t ** 4 - 3
-z = 2 * t
+t = np.linspace(0, 10, 100)
 
-# Define Stroke objects and position vector.
-ftheta = Stroke(t, theta, kind="cubic")
+x1 = Stroke(t, x1_data, kind="cubic")
+y1 = Stroke(t, y1_data, kind="cubic")
+z1 = Stroke(t, z1_data, kind="cubic")
 
-fx = Stroke(t, x, kind="cubic")
-fy = Stroke(t, y, kind="cubic")
-fz = Stroke(t, z, kind="cubic")
+x2 = Stroke(t, x1_data, kind="cubic")
+y2 = Stroke(t, y1_data, kind="cubic")
+z2 = Stroke(t, z1_data, kind="cubic")
+```
 
-pos = np.array([fx, fy, fz], dtype=object)
+where `x1,y1,z1` and `x2,y2,z2` represent the coordinates of two points. We can then form NumPy vectors:
+
+```python
+v1 = np.array([x1, y1, z1])
+v2 = np.array([x2, y2, z2])
+```
+
+We can then use standard NumPy techniques to gain interpolable representations of expected results. We can get a continuous and interpolable representation of the norm of our vectors with time:
+
+```python
+norm1 = np.linalg.norm(v1)
+norm2 = np.linalge.norm(v2)
+
+# Interpolate norms.
+tnew = np.linspace(5, 6, 100)
+norm1_new = norm1(tnew)
+norm2_new = norm2(tnew)
+```
+
+Or we could get a continuous and interpolable representation of the dot product between our vectors with time:
+
+```python
+dot12 = np.dot(v1, v2)
+
+# Interpolate inner product.
+tnew = np.linspace(5, 6, 100)
+dot12_new = dot12(tnew)
+```
+
+Combining these results, we can get a continuous and interpolable time-series of the angle between our two vectors:
+
+```python
+theta12_rad = np.arccos(dot12 / (norm1 * norm2))
+theta12_deg = np.degrees(theta12_rad)
+
+# Interpolate angles.
+tnew = np.linspace(5, 6, 100)
+theta12_rad_new = theta12_rad(tnew)
+theta12_deg_new = theta12_deg(tnew)
+```
+
+An example of another helpful data operation is matrix-vector multiplication. To rotate our vectors about the z-axis by a time-evolving angle, `theta12_rad`, we can use the 3rd principal axis rotation:
+
+```python
 
 # Construct rotation matrix and rotate position vector.
-M = np.array([[np.cos(ftheta), -np.sin(ftheta), 0],
-              [np.sin(ftheta), np.cos(ftheta),  0],
-              [0,              0,               1]], dtype=object)
-new_pos = np.matmul(M, pos)
+C3 = np.array([[np.cos(theta12_rad), -np.sin(theta12_rad), 0],
+               [np.sin(theta12_rad), np.cos(theta12_rad),  0],
+               [0,                   0,                    1]], dtype=object)
+new_pos = np.matmul(C3, v1)
 
 # Interpolate new (rotated) positions.
 tnew = np.linspace(0, 9, 100)
-xnew = new_pos[0](tnew)
-ynew = new_pos[1](tnew)
-znew = new_pos[2](tnew)
+x1new = new_pos[0](tnew)
+y1new = new_pos[1](tnew)
+z1new = new_pos[2](tnew)
 ```
