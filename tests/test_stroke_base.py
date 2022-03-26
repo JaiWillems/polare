@@ -22,7 +22,7 @@ class TestStrokeBase(TestCase):
         self.xother = np.linspace(-1, 1, 10)
         self.yother = np.sin(self.xother)
 
-        self.fother = Stroke(self.xother, self.yother)
+        self.fother = Stroke(self.xother, self.yother, "cubic")
 
         self.xothernew = np.linspace(-1, 1, 100)
         self.yothernew = np.sin(self.xothernew)
@@ -186,3 +186,51 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(abs(self.ynew), y1, atol=0.1))
         self.assertTrue(np.allclose(abs(self.ynew), y2, atol=0.1))
         self.assertTrue(np.allclose(abs(self.ynew), y3, atol=0.1))
+    
+    def test_eq(self):
+
+        y3 = (self.f3 == 0)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew == 0, y3))
+
+        yother = (self.f3 == self.fother)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew == self.yothernew, yother))
+
+    def test_ne(self):
+
+        y3 = (self.f3 != 0)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew != 0, y3))
+
+        yother = (self.f3 != self.fother)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew != self.yothernew, yother))
+
+    def test_lt(self):
+
+        y3 = (self.f3 < 0)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew < 0, y3))
+
+        yother = (self.f3 < self.fother)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew < self.yothernew, yother))
+
+    def test_le(self):
+
+        y3 = (self.f3 <= 0)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew <= 0, y3))
+
+        yother = (self.f3 <= self.fother)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew <= self.yothernew, yother))
+
+    def test_gt(self):
+
+        y3 = (self.f3 > 0)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew > 0, y3))
+
+        yother = (self.f3 > self.fother)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew > self.yothernew, yother))
+
+    def test_ge(self):
+
+        y3 = (self.f3 >= 0)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew >= 0, y3))
+
+        yother = (self.f3 >= self.fother)(self.xnew)
+        self.assertTrue(np.array_equal(self.ynew >= self.yothernew, yother))
