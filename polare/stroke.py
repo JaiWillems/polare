@@ -130,6 +130,30 @@ class Stroke:
     def __abs__(self):
 
         return self._uniary_operation(np.abs)
+    
+    def __eq__(self, other):
+
+        return self._binary_operation(np.equal, other)
+
+    def __ne__(self, other):
+
+        return self._binary_operation(np.not_equal, other)
+
+    def __lt__(self, other):
+
+        return self._binary_operation(np.less, other)
+
+    def __le__(self, other):
+
+        return self._binary_operation(np.less_equal, other)
+
+    def __gt__(self, other):
+
+        return self._binary_operation(np.greater, other)
+
+    def __ge__(self, other):
+
+        return self._binary_operation(np.greater_equal, other)
 
     def _binary_operation(self, ufunc, other, r=False):
         """Return Stroke post binary operation.
@@ -152,12 +176,9 @@ class Stroke:
         copy = self._copy()
 
         if isinstance(other, type(self)):
-
             copy._inst = _extend_inst(copy._inst, copy._n, other._inst, other._n)
             a, b, val = copy._n - 1, copy._n + other._n - 1, None
-
         else:
-
             a, b, val = copy._n - 1, None, other
 
         a, b, val = (b, a, val) if r else (a, b, val)
