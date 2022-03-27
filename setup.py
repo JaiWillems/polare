@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="Polare",
+    name="polare",
     version="0.1.0",
     author="Jai Willems",
     author_email="jai52h@hotmail.com",
