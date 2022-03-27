@@ -89,39 +89,66 @@ class Stroke:
 
     def __add__(self, other):
 
-        return self._binary_operation(np.add, other)
+        if isinstance(other, (int, float)) and (other == 0):
+            return self
+        else:
+            return self._binary_operation(np.add, other)
 
     def __radd__(self, other):
 
-        return self._binary_operation(np.add, other, r=True)
+        if isinstance(other, (int, float)) and (other == 0):
+            return self
+        else:
+            return self._binary_operation(np.add, other, r=True)
 
     def __sub__(self, other):
 
-        return self._binary_operation(np.subtract, other)
+        if isinstance(other, (int, float)) and (other == 0):
+            return self
+        else:
+            return self._binary_operation(np.subtract, other)
 
     def __rsub__(self, other):
 
-        return self._binary_operation(np.subtract, other, r=True)
+        if isinstance(other, (int, float)) and (other == 0):
+            return -self
+        else:
+            return self._binary_operation(np.subtract, other, r=True)
 
     def __mul__(self, other):
 
-        return self._binary_operation(np.multiply, other)
+        if isinstance(other, (int, float)) and (other == 0):
+            return 0
+        else:
+            return self._binary_operation(np.multiply, other)
 
     def __rmul__(self, other):
 
-        return self._binary_operation(np.multiply, other, r=True)
+        if isinstance(other, (int, float)) and (other == 0):
+            return 0
+        else:
+            return self._binary_operation(np.multiply, other, r=True)
 
     def __truediv__(self, other):
 
-        return self._binary_operation(np.true_divide, other)
+        if isinstance(other, (int, float)) and (other == 0):
+            raise ZeroDivisionError("Division by zero.")
+        else:
+            return self._binary_operation(np.true_divide, other)
 
     def __rtruediv__(self, other):
 
-        return self._binary_operation(np.true_divide, other, r=True)
+        if isinstance(other, (int, float)) and (other == 0):
+            return 0
+        else:
+            return self._binary_operation(np.true_divide, other, r=True)
 
     def __pow__(self, other):
 
-        return self._binary_operation(np.power, other)
+        if isinstance(other, (int, float)) and (other == 0):
+            return 1
+        else:
+            return self._binary_operation(np.power, other)
 
     def __rpow__(self, other):
 
