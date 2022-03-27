@@ -57,6 +57,14 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(self.ynew + 5, y2, atol=0.1))
         self.assertTrue(np.allclose(self.ynew + 5, y3, atol=0.1))
 
+        y1 = (self.f1 + 0)(self.xnew)
+        y2 = (self.f2 + 0)(self.xnew)
+        y3 = (self.f3 + 0)(self.xnew)
+
+        self.assertTrue(np.allclose(self.ynew, y1, atol=0.1))
+        self.assertTrue(np.allclose(self.ynew, y2, atol=0.1))
+        self.assertTrue(np.allclose(self.ynew, y3, atol=0.1))
+
         yother = (self.f1 + self.fother)(self.xnew)
         self.assertTrue(np.allclose(self.ynew + self.yothernew, yother, atol=0.1))
     
@@ -69,6 +77,14 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(5 + self.ynew, y1, atol=0.1))
         self.assertTrue(np.allclose(5 + self.ynew, y2, atol=0.1))
         self.assertTrue(np.allclose(5 + self.ynew, y3, atol=0.1))
+        
+        y1 = (0 + self.f1)(self.xnew)
+        y2 = (0 + self.f2)(self.xnew)
+        y3 = (0 + self.f3)(self.xnew)
+
+        self.assertTrue(np.allclose(self.ynew, y1, atol=0.1))
+        self.assertTrue(np.allclose(self.ynew, y2, atol=0.1))
+        self.assertTrue(np.allclose(self.ynew, y3, atol=0.1))
 
         yother = (self.fother + self.f1)(self.xnew)
         self.assertTrue(np.allclose(self.yothernew + self.ynew, yother, atol=0.1))
@@ -83,18 +99,26 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(self.ynew - 5, y2, atol=0.1))
         self.assertTrue(np.allclose(self.ynew - 5, y3, atol=0.1))
 
+        y1 = (self.f1 - 0)(self.xnew)
+        y2 = (self.f2 - 0)(self.xnew)
+        y3 = (self.f3 - 0)(self.xnew)
+
+        self.assertTrue(np.allclose(self.ynew, y1, atol=0.1))
+        self.assertTrue(np.allclose(self.ynew, y2, atol=0.1))
+        self.assertTrue(np.allclose(self.ynew, y3, atol=0.1))
+
         yother = (self.f1 - self.fother)(self.xnew)
         self.assertTrue(np.allclose(self.ynew - self.yothernew, yother, atol=0.1))
     
     def test_rsub(self):
 
-        y1 = (5 - self.f1)(self.xnew)
-        y2 = (5 - self.f2)(self.xnew)
-        y3 = (5 - self.f3)(self.xnew)
+        y1 = (0 - self.f1)(self.xnew)
+        y2 = (0 - self.f2)(self.xnew)
+        y3 = (0 - self.f3)(self.xnew)
 
-        self.assertTrue(np.allclose(5 - self.ynew, y1, atol=0.1))
-        self.assertTrue(np.allclose(5 - self.ynew, y2, atol=0.1))
-        self.assertTrue(np.allclose(5 - self.ynew, y3, atol=0.1))
+        self.assertTrue(np.allclose(-self.ynew, y1, atol=0.1))
+        self.assertTrue(np.allclose(-self.ynew, y2, atol=0.1))
+        self.assertTrue(np.allclose(-self.ynew, y3, atol=0.1))
 
         yother = (self.fother - self.f1)(self.xnew)
         self.assertTrue(np.allclose(self.yothernew - self.ynew, yother, atol=0.1))
@@ -109,6 +133,14 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(self.ynew * 5, y2, atol=0.2))
         self.assertTrue(np.allclose(self.ynew * 5, y3, atol=0.05))
 
+        y1 = self.f1 * 0
+        y2 = self.f2 * 0
+        y3 = self.f3 * 0
+
+        self.assertTrue(0 == y1)
+        self.assertTrue(0 == y2)
+        self.assertTrue(0 == y3)
+
         yother = (self.f1 * self.fother)(self.xnew)
         self.assertTrue(np.allclose(self.ynew * self.yothernew, yother, atol=0.1))
     
@@ -121,6 +153,14 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(5 * self.ynew, y1, atol=0.4))
         self.assertTrue(np.allclose(5 * self.ynew, y2, atol=0.2))
         self.assertTrue(np.allclose(5 * self.ynew, y3, atol=0.05))
+
+        y1 = 0 * self.f1
+        y2 = 0 * self.f2
+        y3 = 0 * self.f3
+
+        self.assertTrue(0 == y1)
+        self.assertTrue(0 == y2)
+        self.assertTrue(0 == y3)
 
         yother = (self.fother * self.f1)(self.xnew)
         self.assertTrue(np.allclose(self.yothernew * self.ynew, yother, atol=0.1))
@@ -135,6 +175,13 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(self.ynew / 5, y2, atol=0.05))
         self.assertTrue(np.allclose(self.ynew / 5, y3, atol=0.05))
 
+        def _raise_callable(a, b):
+            return a / b
+
+        self.assertRaises(ZeroDivisionError, _raise_callable, self.f1, 0)
+        self.assertRaises(ZeroDivisionError, _raise_callable, self.f2, 0)
+        self.assertRaises(ZeroDivisionError, _raise_callable, self.f3, 0)
+
         yother = (self.f1 / self.fother)(self.xnew)
         self.assertTrue(np.allclose(self.ynew / self.yothernew, yother, atol=5.5))
     
@@ -148,6 +195,14 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(5 / self.ynew[50:], y2, atol=1.5))
         self.assertTrue(np.allclose(5 / self.ynew[50:], y3, atol=1.5))
 
+        y1 = 0 / self.f1
+        y2 = 0 / self.f2
+        y3 = 0 / self.f3
+
+        self.assertTrue(0 == y1)
+        self.assertTrue(0 == y2)
+        self.assertTrue(0 == y3)
+
         yother = (self.fother / self.f1)(self.xnew[50:])
         self.assertTrue(np.allclose(self.yothernew[50:] / self.ynew[50:], yother, atol=0.3))
     
@@ -160,6 +215,14 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(self.ynew ** 5, y1, atol=2))
         self.assertTrue(np.allclose(self.ynew ** 5, y2, atol=2))
         self.assertTrue(np.allclose(self.ynew ** 5, y3, atol=2))
+
+        y1 = self.f1 ** 0
+        y2 = self.f2 ** 0
+        y3 = self.f3 ** 0
+
+        self.assertTrue(1 == y1)
+        self.assertTrue(1 == y2)
+        self.assertTrue(1 == y3)
 
         yother = (abs(self.f1) ** abs(self.fother))(self.xnew)
         self.assertTrue(np.allclose(abs(self.ynew) ** abs(self.yothernew), yother, atol=2))
