@@ -26,9 +26,9 @@ class TestStrokeBase(TestCase):
 
         self.xothernew = np.linspace(-1, 1, 100)
         self.yothernew = np.sin(self.xothernew)
-    
+
     def test_pos(self):
-        
+
         y1 = (+self.f1)(self.xnew)
         y2 = (+self.f2)(self.xnew)
         y3 = (+self.f3)(self.xnew)
@@ -38,7 +38,7 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(self.ynew, y3, atol=0.1))
 
     def test_neg(self):
-        
+
         y1 = (-self.f1)(self.xnew)
         y2 = (-self.f2)(self.xnew)
         y3 = (-self.f3)(self.xnew)
@@ -46,9 +46,9 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(-self.ynew, y1, atol=0.1))
         self.assertTrue(np.allclose(-self.ynew, y2, atol=0.1))
         self.assertTrue(np.allclose(-self.ynew, y3, atol=0.1))
-    
+
     def test_add(self):
-        
+
         y1 = (self.f1 + 5)(self.xnew)
         y2 = (self.f2 + 5)(self.xnew)
         y3 = (self.f3 + 5)(self.xnew)
@@ -67,7 +67,7 @@ class TestStrokeBase(TestCase):
 
         yother = (self.f1 + self.fother)(self.xnew)
         self.assertTrue(np.allclose(self.ynew + self.yothernew, yother, atol=0.1))
-    
+
     def test_radd(self):
 
         y1 = (5 + self.f1)(self.xnew)
@@ -77,7 +77,7 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(5 + self.ynew, y1, atol=0.1))
         self.assertTrue(np.allclose(5 + self.ynew, y2, atol=0.1))
         self.assertTrue(np.allclose(5 + self.ynew, y3, atol=0.1))
-        
+
         y1 = (0 + self.f1)(self.xnew)
         y2 = (0 + self.f2)(self.xnew)
         y3 = (0 + self.f3)(self.xnew)
@@ -88,7 +88,7 @@ class TestStrokeBase(TestCase):
 
         yother = (self.fother + self.f1)(self.xnew)
         self.assertTrue(np.allclose(self.yothernew + self.ynew, yother, atol=0.1))
-    
+
     def test_sub(self):
 
         y1 = (self.f1 - 5)(self.xnew)
@@ -109,7 +109,7 @@ class TestStrokeBase(TestCase):
 
         yother = (self.f1 - self.fother)(self.xnew)
         self.assertTrue(np.allclose(self.ynew - self.yothernew, yother, atol=0.1))
-    
+
     def test_rsub(self):
 
         y1 = (0 - self.f1)(self.xnew)
@@ -122,9 +122,9 @@ class TestStrokeBase(TestCase):
 
         yother = (self.fother - self.f1)(self.xnew)
         self.assertTrue(np.allclose(self.yothernew - self.ynew, yother, atol=0.1))
-    
+
     def test_mul(self):
-        
+
         y1 = (self.f1 * 5)(self.xnew)
         y2 = (self.f2 * 5)(self.xnew)
         y3 = (self.f3 * 5)(self.xnew)
@@ -143,7 +143,7 @@ class TestStrokeBase(TestCase):
 
         yother = (self.f1 * self.fother)(self.xnew)
         self.assertTrue(np.allclose(self.ynew * self.yothernew, yother, atol=0.1))
-    
+
     def test_rmul(self):
 
         y1 = (5 * self.f1)(self.xnew)
@@ -164,9 +164,9 @@ class TestStrokeBase(TestCase):
 
         yother = (self.fother * self.f1)(self.xnew)
         self.assertTrue(np.allclose(self.yothernew * self.ynew, yother, atol=0.1))
-    
+
     def test_truediv(self):
-        
+
         y1 = (self.f1 / 5)(self.xnew)
         y2 = (self.f2 / 5)(self.xnew)
         y3 = (self.f3 / 5)(self.xnew)
@@ -184,7 +184,7 @@ class TestStrokeBase(TestCase):
 
         yother = (self.f1 / self.fother)(self.xnew)
         self.assertTrue(np.allclose(self.ynew / self.yothernew, yother, atol=5.5))
-    
+
     def test_rtruediv(self):
 
         y1 = (5 / self.f1)(self.xnew[50:])
@@ -205,9 +205,9 @@ class TestStrokeBase(TestCase):
 
         yother = (self.fother / self.f1)(self.xnew[50:])
         self.assertTrue(np.allclose(self.yothernew[50:] / self.ynew[50:], yother, atol=0.3))
-    
+
     def test_pow(self):
-        
+
         y1 = (self.f1 ** 5)(self.xnew)
         y2 = (self.f2 ** 5)(self.xnew)
         y3 = (self.f3 ** 5)(self.xnew)
@@ -226,7 +226,7 @@ class TestStrokeBase(TestCase):
 
         yother = (abs(self.f1) ** abs(self.fother))(self.xnew)
         self.assertTrue(np.allclose(abs(self.ynew) ** abs(self.yothernew), yother, atol=2))
-    
+
     def test_rpow(self):
 
         y1 = (5 ** self.f1)(self.xnew)
@@ -249,7 +249,7 @@ class TestStrokeBase(TestCase):
         self.assertTrue(np.allclose(abs(self.ynew), y1, atol=0.1))
         self.assertTrue(np.allclose(abs(self.ynew), y2, atol=0.1))
         self.assertTrue(np.allclose(abs(self.ynew), y3, atol=0.1))
-    
+
     def test_eq(self):
 
         y3 = (self.f3 == 0)(self.xnew)

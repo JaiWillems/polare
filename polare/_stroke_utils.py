@@ -56,7 +56,7 @@ def _compute(inst: list, n: int, x: npt.ArrayLike, assume_ordered: bool) -> np.n
     Returns
     -------
     np.ndarray
-        1D array of the evaluted instruction set.
+        1D array of the evaluated instruction set.
     """
 
     opp, val = inst[n][0], inst[n][3]

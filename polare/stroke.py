@@ -14,8 +14,8 @@ class Stroke:
 
     `x` and `y` are arrays of values to describe a function ``y=f(x)`` for
     scalar ``x`` and ``y``. This class stores continuous data approximations
-    and alows for operations on the continuous approximation. The class can be
-    called to find the value of new points.
+    and allows for operations on the continuous approximation. The class can be
+    called to find the value ``g(y(x))`` for new values of ``x``.
 
     Parameters
     ----------
@@ -157,7 +157,7 @@ class Stroke:
     def __abs__(self):
 
         return self._uniary_operation(np.abs)
-    
+
     def __eq__(self, other):
 
         return self._binary_operation(np.equal, other)
