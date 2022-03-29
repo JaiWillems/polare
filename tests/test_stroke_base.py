@@ -3,6 +3,7 @@
 from polare import Stroke
 from unittest import TestCase
 import numpy as np
+import unittest
 
 
 class TestStrokeBase(TestCase):
@@ -297,3 +298,7 @@ class TestStrokeBase(TestCase):
 
         yother = (self.f3 >= self.fother)(self.xnew)
         self.assertTrue(np.array_equal(self.ynew >= self.yothernew, yother))
+
+
+if __name__ == "__main__":
+    unittest.main()

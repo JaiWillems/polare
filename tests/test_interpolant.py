@@ -3,6 +3,7 @@
 from polare.interpolant import Interp
 from unittest import TestCase
 import numpy as np
+import unittest
 
 
 class TestPolyInterp(TestCase):
@@ -29,3 +30,7 @@ class TestPolyInterp(TestCase):
 
         ytest = Interp(self.x, self.y, "cubic")(self.xnew)
         self.assertTrue(np.allclose(self.ynew, ytest, rtol=0.01))
+
+
+if __name__ == "__main__":
+    unittest.main()

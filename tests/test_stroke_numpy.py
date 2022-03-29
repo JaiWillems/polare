@@ -3,6 +3,7 @@
 from polare import Stroke
 from unittest import TestCase
 import numpy as np
+import unittest
 
 
 class TestStrokeNumpyMath(TestCase):
@@ -1432,3 +1433,7 @@ class TestStrokeNumpyFloating(TestCase):
         self.assertTrue(np.allclose(y1, val, rtol=0.01))
         self.assertTrue(np.allclose(y2, val, rtol=0.01))
         self.assertTrue(np.allclose(y3, val, rtol=0.01))
+
+
+if __name__ == "__main__":
+    unittest.main()
