@@ -89,6 +89,9 @@ class Interp:
             raise ValueError("x should be a scalar or 1D array.")
 
         if not assume_ordered:
+            test_xi = np.copy(xi)
             xi = np.sort(xi, kind="quicksort")
+            if not np.all(test_xi == xi):
+                raise UserWarning("x is not sorted, output and input array's will not correspond.")
 
         return self._f(xi)
