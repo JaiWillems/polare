@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: Citation for the Polare library.
+title: Polare
+abstract: Kernels for continuous data transformations.
+authors:
+  - family-names: Willems
+    given-names: Jai
+version: 0.1.0
+date-released: "2022-04-01"
+license: BSD-3-Clause
+repository-code: "https://github.com/JaiWillems/polare"
