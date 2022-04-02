@@ -1,4 +1,6 @@
-# Polare
+# <img src="/branding/logo/transparent_background_blue.png" height="150"></a>
+
+[![PyPI version](https://badge.fury.io/py/polare.svg)](https://badge.fury.io/py/polare.svg) [![license](https://img.shields.io/github/license/JaiWillems/polare)](https://img.shields.io/github/license/JaiWillems/polare) [![wheel](https://img.shields.io/pypi/wheel/polare)](https://img.shields.io/pypi/wheel/polare)
 
 Polare is a computation tool that provides a continuous representation of input data, referred to as a Stroke, which doubles as an algebraic node for computations. A set of discrete data can be stored in the Stroke object and operated on as if it was a continuous function; the altered Stroke can then be evaluated within its input domain.
 
